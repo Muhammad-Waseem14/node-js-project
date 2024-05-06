@@ -1,8 +1,20 @@
 const express = require("express");
+const fs = require("fs");
 
 const users = require("./MOCK_DATA.json");
 
 const app = express();
+
+//middleware
+app.use((req, res, next) => {
+  fs.appendFile(
+    "lot.txt",
+    `${Date.now()}: ${req.method}: ${req.path}\n`,
+    (error, data) => {
+      next();
+    }
+  );
+});
 
 //send html as a response
 app.get("/users", (req, res) => {
